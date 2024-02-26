@@ -13,7 +13,7 @@ namespace RAHSHU_BlogApi.Services.PostService
         public PostService(IMapper mapper, IPostRepository postRepository)
         {
             _mapper = mapper;
-            _postRepository = postRepository ?? throw new ArgumentNullException(nameof(postRepository));
+            _postRepository = postRepository;
         }
         public async Task<List<GetPostDto>> AddPost(AddPostDto newPost)
         {

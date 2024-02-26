@@ -11,8 +11,8 @@ namespace RAHSHU_BlogApi.Services.SeedService
 
         public SeedService(DataContext context, IHttpClientService httpClientService, IJsonPlaceholderService jsonPlaceholderService)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _httpClientService = httpClientService ?? throw new ArgumentNullException(nameof(httpClientService));
+            _context = context;
+            _httpClientService = httpClientService;
             this.jsonPlaceholderService = jsonPlaceholderService;
         }
 
