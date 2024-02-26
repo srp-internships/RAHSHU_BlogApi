@@ -5,11 +5,10 @@ namespace RAHSHU_BlogApi.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext() : base()
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
-
 
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }

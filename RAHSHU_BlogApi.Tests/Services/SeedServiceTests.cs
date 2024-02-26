@@ -1,9 +1,8 @@
 ﻿using Moq;
-using RAHSHU_BlogApi.Data;
 using RAHSHU_BlogApi.Models;
-using RAHSHU_BlogApi.Services;
-using RAHSHU_BlogApi.Services.JsonPlaceholderService;
 using RAHSHU_BlogApi.Services.SeedService;
+using RAHSHU_BlogApi.Services.JsonPlaceholderService;
+using RAHSHU_BlogApi.Repository.UserRepository;
 
 namespace RAHSHU_BlogApi.Tests.Services
 {
@@ -11,25 +10,23 @@ namespace RAHSHU_BlogApi.Tests.Services
     public class SeedServiceTests
     {
         private SeedService _seedService;
-        private Mock<DataContext> _mockContext;
-        private Mock<IHttpClientService> _mockHttpClientService;
+        private Mock<IUserRepository> _mockUserRepository;
         private Mock<IJsonPlaceholderService> _mockJsonPlaceholderService;
 
         [SetUp]
         public void Setup()
         {
-            _mockContext = new Mock<DataContext>();
-            _mockHttpClientService = new Mock<IHttpClientService>();
+            _mockUserRepository = new Mock<IUserRepository>();
             _mockJsonPlaceholderService = new Mock<IJsonPlaceholderService>();
-            _seedService = new SeedService(_mockContext.Object, _mockHttpClientService.Object, _mockJsonPlaceholderService.Object);
+            _seedService = new SeedService(_mockUserRepository.Object, _mockJsonPlaceholderService.Object);
         }
 
         [Test]
-        public async Task Seed_ShouldSeedUsersAndPosts()
+        public async Task Seed_ShouldSeedUsersWithPosts()
         {
             // Arrange
-            var users = new List<User> { new User { Id = 1 }, new User { Id = 2 } };
-            var posts = new List<Post> { new Post { UserId = 1 }, new Post { UserId = 2 }, new Post { UserId = 1 } };
+            var users = new List<User> { new User { Id = 1, FirstName = "User 1" }, new User { Id = 2, FirstName = "User 2" } };
+            var posts = new List<Post> { new Post { Id = 1, UserId = 1, Title = "Post 1" }, new Post { Id = 2, UserId = 2, Title = "Post 2" } };
 
             _mockJsonPlaceholderService.Setup(s => s.FetchUser()).ReturnsAsync(users);
             _mockJsonPlaceholderService.Setup(s => s.FetchPost()).ReturnsAsync(posts);
@@ -38,10 +35,8 @@ namespace RAHSHU_BlogApi.Tests.Services
             await _seedService.Seed();
 
             // Assert
-            _mockContext.Verify(c => c.Users.AddRange(users), Times.Once);
-            _mockContext.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            _mockUserRepository.Verify(r => r.Create(It.IsAny<List<User>>()), Times.Once);
+            _mockUserRepository.Verify(r => r.SaveChangesAsync(), Times.Once);
         }
-
-        
     }
 }

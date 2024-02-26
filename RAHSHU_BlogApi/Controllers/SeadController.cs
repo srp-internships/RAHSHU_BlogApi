@@ -9,41 +9,21 @@ namespace RAHSHU_BlogApi.Controllers
     public class SeedController : ControllerBase
     {
 
-        private readonly ISeedService service;
+        private readonly ISeedService _service;
 
         public SeedController(ISeedService service)
         {
-            this.service = service;
+            _service = service;
         }
 
         [HttpPost]
         public async Task<ActionResult> Seed()
         {
-           await service.Seed();
+
+           await _service.Seed();
 
 
             return NoContent();
-        }
-
-        public async Task<T> GetData<T>(string baseAddress, string endpoint)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(baseAddress);
-
-                using (HttpResponseMessage response = await client.GetAsync(endpoint))
-                {
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var responseContent = await response.Content.ReadAsStringAsync();
-
-                        T items = JsonConvert.DeserializeObject<T>(responseContent);
-
-                        return items;
-                    }
-                }
-            }
-            return default;
         }
     }
 }

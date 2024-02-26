@@ -10,7 +10,7 @@ namespace RAHSHU_BlogApi.Repository.PostRepository
 
         public PostRepository(DataContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
         }
 
         public async Task<Post> AddAsync(Post newPost)
