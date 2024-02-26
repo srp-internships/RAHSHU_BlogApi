@@ -3,6 +3,7 @@ using RAHSHU_BlogApi.Services.JsonPlaceholderService;
 
 namespace RAHSHU_BlogApi.Services.SeedService
 {
+    
     public class SeedService : ISeedService
     {
         private readonly DataContext _context;
