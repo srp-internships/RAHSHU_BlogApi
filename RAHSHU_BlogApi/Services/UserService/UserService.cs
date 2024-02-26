@@ -17,40 +17,25 @@ namespace RAHSHU_BlogApi.Services.UserService
 
         public async Task<List<GetUserDto>> GetAllUsers()
         {
-            try
-            {
-                var users = await _userRepository.GetAllAsync();
-                return _mapper.Map<List<GetUserDto>>(users);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            var users = await _userRepository.GetAllAsync();
+            return _mapper.Map<List<GetUserDto>>(users);
         }
 
         public async Task<IEnumerable<GetUserDto>> Search(string username)
         {
-            try
-            {
-                var users = await _userRepository.GetAllAsync();
+            var users = await _userRepository.GetAllAsync();
 
-                if (!string.IsNullOrEmpty(username))
-                {
-                    users = users.Where(u =>
+            if (!string.IsNullOrEmpty(username))
+            {
+                users = users.Where(u =>
                     u.FirstName.Contains(username) ||
                     u.LastName.Contains(username) ||
                     u.Username.Contains(username)
-                    );
-                }
-
-                var filteredUserDto = _mapper.Map<IEnumerable<GetUserDto>>(users);
-
-                return filteredUserDto;
+                );
             }
-            catch (Exception)
-            {
-                throw;
-            }
+
+            var filteredUserDto = _mapper.Map<IEnumerable<GetUserDto>>(users);
+            return filteredUserDto;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using RAHSHU_BlogApi.Services.JsonPlaceholderService;
 using RAHSHU_BlogApi.Repository.UserRepository;
-using RAHSHU_BlogApi.Repository.PostRepository;
 
 namespace RAHSHU_BlogApi.Services.SeedService
 {

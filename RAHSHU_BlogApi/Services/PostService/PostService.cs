@@ -17,46 +17,24 @@ namespace RAHSHU_BlogApi.Services.PostService
         }
         public async Task<List<GetPostDto>> AddPost(AddPostDto newPost)
         {
-            try
-            {
-                var post = _mapper.Map<Post>(newPost);
-                var addPost = await _postRepository.AddAsync(post);
-                await _postRepository.SaveChangesAsync();
-                var addpostDto = _mapper.Map<GetPostDto>(addPost);
-                return new List<GetPostDto> { addpostDto };
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            var post = _mapper.Map<Post>(newPost);
+            var addPost = await _postRepository.AddAsync(post);
+            await _postRepository.SaveChangesAsync();
+            var addpostDto = _mapper.Map<GetPostDto>(addPost);
+            return new List<GetPostDto> { addpostDto };
         }
 
         public async Task<Post> DeletePost(int postId)
         {
-            try
-            {
-                await _postRepository.DeleteAsync(postId);
-                return null;  
-            }
-            catch (Exception ex)
-            {
-               
-                throw;
-            }
+            await _postRepository.DeleteAsync(postId);
+            return null;
+
         }
 
         public async Task<List<GetPostDto>> GetAllPost()
         {
-            try
-            {
-                var users = await _postRepository.GetAllAsync();
-                return _mapper.Map<List<GetPostDto>>(users);
-            }
-            catch (Exception ex)
-            {
-               
-                throw;
-            }
+            var users = await _postRepository.GetAllAsync();
+            return _mapper.Map<List<GetPostDto>>(users);
         }
 
         public async Task<IEnumerable<Post>> GetPaging(int skip, int take = 10)
@@ -76,16 +54,8 @@ namespace RAHSHU_BlogApi.Services.PostService
 
         public async Task<IEnumerable<GetPostDto>> GetUserPosts(int userId)
         {
-            try
-            {
-                var post = await _postRepository.GetPostsByUserId(userId);
-                return _mapper.Map<IEnumerable<GetPostDto>>(post);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            var post = await _postRepository.GetPostsByUserId(userId);
+            return _mapper.Map<IEnumerable<GetPostDto>>(post);
         }
 
         public async Task<GetPostDto> UpdateUser(int postId, UpdatePostDto updatePost)

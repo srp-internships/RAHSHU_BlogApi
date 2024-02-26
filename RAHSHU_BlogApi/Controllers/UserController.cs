@@ -19,6 +19,10 @@ namespace RAHSHU_BlogApi.Controllers
             try
             {
                 var users = await _userService.GetAllUsers();
+                if (users == null || users.Count == 0)
+                {
+                    return NotFound("No users found.");
+                }
                 return Ok(users);
             }
             catch (Exception ex)
@@ -33,6 +37,12 @@ namespace RAHSHU_BlogApi.Controllers
             try
             {
                 var users = await _userService.Search(username);
+
+                if (users.Count() == 0 || users == null) 
+                {
+                    return NotFound($"No users found with the name '{username}'.");
+                }
+
                 return Ok(users);
             }
             catch (Exception ex)

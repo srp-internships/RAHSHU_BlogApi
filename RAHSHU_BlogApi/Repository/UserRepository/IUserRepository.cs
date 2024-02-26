@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using RAHSHU_BlogApi.Models;
+﻿using RAHSHU_BlogApi.Models;
 
 namespace RAHSHU_BlogApi.Repository.UserRepository
 {

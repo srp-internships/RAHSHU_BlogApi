@@ -18,25 +18,84 @@ namespace RAHSHU_BlogApi.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<List<GetPostDto>>> GetAll()
         {
-            return Ok(await _postService.GetAllPost());
+            try
+            {
+                var posts = await _postService.GetAllPost();
+
+                if (posts.Any())
+                {
+                    return Ok(posts);
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception)
+            {
+                return NotFound("No Post Found");
+            }
         }
 
         [HttpGet("GetPaging")]
         public async Task<IActionResult> GetPaging(int skip, int take)
         {
-            return Ok(await _postService.GetPaging(skip,take));
+            try
+            {
+                var posts = await _postService.GetPaging(skip, take);
+
+                if (posts.Any())
+                {
+                    return Ok(posts);
+                }
+                else
+                {
+                    return NotFound("No posts found for the requested page.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return NotFound("No posts found for the requested page.");
+            }
         }
 
         [HttpGet("GetPostByUserId")]
         public async Task<ActionResult<IEnumerable<GetPostDto>>> GetUserPosts (int userId)
         {
-            return Ok(await _postService.GetUserPosts(userId));
+            try
+            {
+                var userPosts = await _postService.GetUserPosts(userId);
+
+                if (userPosts.Any())
+                {
+                    return Ok(userPosts);
+                }
+                else
+                {
+                    return NotFound($"No posts found for user with ID {userId}.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return NotFound($"User with ID {userId} was not found.");
+            }
         }
 
         [HttpPost("AddPost")]
         public async Task<ActionResult<List<GetPostDto>>> AddPost(AddPostDto newPost)
         {
-            return Ok(await _postService.AddPost(newPost));
+            try
+            {
+                var addedPost = await _postService.AddPost(newPost);
+                return Ok(addedPost);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "An error occurred while adding a new post. Please try again later.");
+            }
         }
 
         [HttpPut("{id}")]

@@ -10,8 +10,6 @@ namespace RAHSHU_BlogApi
         public AutoMapperProfile()
         {
             CreateMap<User, GetUserDto>();
-            CreateMap<AddUserDto, User>();
-            CreateMap<UpdateUserDto, User>();
 
             CreateMap<Post, GetPostDto>();
             CreateMap<AddPostDto, Post>();
