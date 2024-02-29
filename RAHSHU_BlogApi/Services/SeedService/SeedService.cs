@@ -1,37 +1,43 @@
-﻿using RAHSHU_BlogApi.Services.JsonPlaceholderService;
-using RAHSHU_BlogApi.Repository.UserRepository;
+﻿using RAHSHU_BlogApi.Data;
+using RAHSHU_BlogApi.Services.JsonPlaceholderService;
 
 namespace RAHSHU_BlogApi.Services.SeedService
 {
     public class SeedService : ISeedService
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IJsonPlaceholderService _jsonPlaceholderService;
+        private readonly DataContext _context;
+        private readonly IHttpClientService _httpClientService;
+        private readonly IJsonPlaceholderService jsonPlaceholderService;
 
-        public SeedService(IUserRepository userRepository, IJsonPlaceholderService jsonPlaceholderService)
+        public SeedService(DataContext context, IHttpClientService httpClientService, IJsonPlaceholderService jsonPlaceholderService)
         {
-            _userRepository = userRepository;
-            _jsonPlaceholderService = jsonPlaceholderService;
+            _context = context;
+            _httpClientService = httpClientService;
+            this.jsonPlaceholderService = jsonPlaceholderService;
         }
 
         public async Task Seed()
         {
-            var users = await _jsonPlaceholderService.FetchUser();
-            var posts = await _jsonPlaceholderService.FetchPost();
-
-            foreach (var user in users)
+            try
             {
-                var userPosts = posts.Where(p => p.UserId == user.Id);
-                user.Posts = userPosts.ToList();
-                user.Id = 0;
+                var users = await jsonPlaceholderService.FetchUser();
+                var posts = await jsonPlaceholderService.FetchPost();
+
+                foreach(var user in  users)
+                {
+                    var userPosts = posts.Where(p => p.UserId == user.Id);
+                    user.Posts = userPosts.ToList();
+                    user.Id = 0;
+                }
+
+                _context.Users.AddRange(users);
+                await _context.SaveChangesAsync();
+
             }
-
-
-
-            
-
-            await _userRepository.Create(users);
-            await _userRepository.SaveChangesAsync();
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }
