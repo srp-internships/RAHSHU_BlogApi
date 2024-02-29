@@ -21,7 +21,7 @@ namespace RAHSHU_BlogApi.Services.SeedService
 
             foreach (var user in users)
             {
-                var userPosts = posts.Where(p => p.UserId == user.Id).ToArray();
+                var userPosts = posts.Where(p => p.UserId == user.Id);
                 user.Posts = userPosts.ToList();
                 user.Id = 0;
             }
