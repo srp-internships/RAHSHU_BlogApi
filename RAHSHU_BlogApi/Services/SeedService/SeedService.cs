@@ -21,11 +21,11 @@ namespace RAHSHU_BlogApi.Services.SeedService
 
             foreach (var user in users)
             {
-                var userPosts = posts.Where(p => p.UserId == user.Id).ToList();
+                var userPosts = posts.Where(p => p.UserId == user.Id);
                 user.Posts = userPosts.ToList();
                 user.Id = 0;
             }
-
+            
             await _userRepository.Create(users);
             await _userRepository.SaveChangesAsync();
         }
