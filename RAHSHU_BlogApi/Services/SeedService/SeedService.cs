@@ -26,6 +26,10 @@ namespace RAHSHU_BlogApi.Services.SeedService
                 user.Id = 0;
             }
 
+
+
+            
+
             await _userRepository.Create(users);
             await _userRepository.SaveChangesAsync();
         }
